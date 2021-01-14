@@ -1,10 +1,13 @@
 // const { ethers, upgrades } = require("hardhat")
 const { expect } = require("chai")
 const { ethers } = require("ethers")
+const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+
 const GsnTestEnvironment = new require('@opengsn/gsn/dist/GsnTestEnvironment').GsnTestEnvironment
 
-const { getSigners, deployContract, deployUpgradableContract } = require('./utils')
+const { getSigners, deployContract, deployUpgradableContract, testEvent } = require('./utils')
 const PaymasterABI = require('../artifacts/@opengsn/gsn/contracts/interfaces/IPaymaster.sol/IPaymaster.json').abi
+const MyContractABI = require('../artifacts/contracts/MyContract.sol/MyContract.json').abi
 
 describe('GSN', function () {
     let owner
@@ -43,6 +46,7 @@ describe('GSN', function () {
     })
 
     it('should deploy paymaster', async function() {
+        // we can't use GSN for deployments
         let [owner] = await getSigners({ useGSN: false })
         let paymasterInstance = await deployContract('Paymaster', [], owner)
         expect(paymasterInstance.address).to.not.be.undefined
@@ -79,4 +83,15 @@ describe('GSN', function () {
         paymasterRelayBalance = await paymasterInstance.getRelayHubDeposit()
         expect(paymasterRelayBalance).to.be.below(value)
     })
+
+    it('should connect to previously deployed MyContract and receive an event', testEvent(async (done) => {
+        let existingInstance = new ethers.Contract(contractInstance.address, MyContractABI, emptyAccount)
+        existingInstance = existingInstance.connect(emptyAccount)
+        await existingInstance.setVal(10)
+        existingInstance.on('ValSet', async (addr, val) => {
+            expect(addr).to.equal(await emptyAccount.getAddress())
+            expect(val).to.equal(10)
+            done()
+        })
+    }))
 })

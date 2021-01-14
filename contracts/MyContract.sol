@@ -22,12 +22,15 @@ contract MyContract is Initializable, BaseRelayRecipient, Modifiers {
 
     mapping(address => uint) values;
 
+    event ValSet(address indexed from, uint value);
+
     function initialize(address _forwarder) public initializer {
         trustedForwarder = _forwarder;
     }
 
     function setVal(uint _val) public {
         values[_msgSender()] = _val;
+        emit ValSet(_msgSender(), _val);
     }
 
     function getVal(address _addr) external view returns (uint _val) {

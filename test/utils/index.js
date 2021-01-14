@@ -18,5 +18,6 @@ module.exports = {
     upgradeContract: async (v2ContractName, v1Address) => {
         const contractV2 = await ethers.getContractFactory(v2ContractName)
         return await upgrades.upgradeProxy(v1Address, contractV2)
-    }
+    },
+    testEvent: (testFn) => (done) => { testFn(done) }
 }

@@ -67,22 +67,25 @@ let accounts = [{
 
 let gsnSigners
 let defaultSigners
+let pmAddress
 let semaphore = false
+// needs default paymaster unless said otherwise
 const getInstance = async (opt) => {
     // setup default options
     let { paymasterAddress, useGSN } = {
         useGSN: true,
+        paymasterAddress: (await GsnTestEnvironment.loadDeployment()).paymasterAddress,
         ...opt
     }
 
-    if ((!gsnSigners && !semaphore) || paymasterAddress) {
+    if ((!gsnSigners && !semaphore) || paymasterAddress !== pmAddress) {
         semaphore = true // mark awaited constructor
+        pmAddress = paymasterAddress
         // fallback to localhoast gsn paymaster if none is provided
-        if (!paymasterAddress) paymasterAddress = (await GsnTestEnvironment.loadDeployment()).paymasterAddress
         let config = {
             paymasterAddress,
             loggerConfiguration: {
-                logLevel: 'debug',
+                logLevel: 'error',
                 // loggerUrl: 'logger.opengsn.org'
             }
         }
