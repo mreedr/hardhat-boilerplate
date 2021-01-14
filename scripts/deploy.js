@@ -16,12 +16,11 @@ async function main() {
   console.log("MyContract address:", instance.address)
 }
 
-async function upgradeContract() {
-  // Upgrading
-  // const MyContractV2 = await ethers.getContractFactory("MyContractV2")
-  // const upgraded = await upgrades.upgradeProxy(instance.address, BoxV2)
-
-}
+// async function upgradeContract() {
+//   // Upgrading
+//   const MyContractV2 = await ethers.getContractFactory("MyContractV2")
+//   const upgraded = await upgrades.upgradeProxy(instance.address, BoxV2)
+// }
 
 main()
   .then(() => process.exit(0))

@@ -24,6 +24,7 @@
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.17.0",
+    "eslint-plugin-react": "^7.22.0",
     "ethereum-waffle": "^3.2.1",
     "ethers": "^5.0.25",
     "hardhat": "^2.0.7",
