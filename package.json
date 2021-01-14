@@ -1,0 +1,49 @@
+{
+  "name": "hardhat-boilerplate",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "michael@waly.cash",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write 'contracts/**/*.sol' && yarn run linter",
+    "compile": "hardhat compile",
+    "test:contracts": "hardhat test --network localhost",
+    "linter": "eslint --fix ./",
+    "deploy:rinkeby": "hardhat run ./scripts/deploy.js --network rinkeby",
+    "deploy:local": "hardhat run ./scripts/deploy.js --network localhost",
+    "clean": "hardhat clean",
+    "dev:net": "hardhat node",
+    "dev:gsn": "gsn start"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@opengsn/gsn": "^2.1.0",
+    "@openzeppelin/contracts-upgradeable": "^3.3.0",
+    "@openzeppelin/hardhat-upgrades": "^1.4.3",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.17.0",
+    "ethereum-waffle": "^3.2.1",
+    "ethers": "^5.0.25",
+    "hardhat": "^2.0.7",
+    "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.3",
+    "web3-providers-http": "^1.3.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "npm run linter",
+      "npm t",
+      "git add ."
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "jest": "^26.6.3"
+  }
+}
