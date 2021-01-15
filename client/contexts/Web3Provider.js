@@ -6,20 +6,21 @@ const Web3HttpProvider = require( 'web3-providers-http')
 const Web3ProviderCtx = createContext()
 
 export function Web3Provider({ children }) {
-  let provider = new ethers.providers.WebSocketProvider(process.env.NEXT_PUBLIC_TEST_WS_CONNECTION)
+  // websocket connection can't do events for some reasaon????
+  // let provider = new ethers.providers.WebSocketProvider(process.env.NEXT_PUBLIC_TEST_WS_CONNECTION)
+  let provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_TEST_HTTP_CONNECTION)
+  let gsnConfig = {
+    paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS,
+    loggerConfiguration: {
+      logLevel: 'error'
+    }
+  }
 
   let send = async (fn) => {
-    let config = {
-        paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS,
-        loggerConfiguration: {
-            logLevel: 'error'
-        }
-    }
     let gsnProvider = await RelayProvider.newProvider({
       provider: new Web3HttpProvider(process.env.NEXT_PUBLIC_TEST_HTTP_CONNECTION),
-      config
+      config: gsnConfig
     }).init()
-
     let from = gsnProvider.newAccount().address
     // wrap gsnPrivder with ethersProvider to interact with our contracts
     let ethersGSNProvider = new ethers.providers.Web3Provider(gsnProvider)

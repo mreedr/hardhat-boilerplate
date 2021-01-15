@@ -8,20 +8,28 @@ export default function Claim({ address, abi }) {
   let contract = new ethers.Contract(address, abi, provider)
 
   useEffect(() => {
+    contract.on('ValSet', async (addr, val) => {
+      console.log('event happened', addr, val.toString())
+      setVal(val.toString())
+    })
+
+    return () => contract.removeAllListeners()
+  }, [])
+
+  useEffect(() => {
     (async () => {
       contract = contract.connect(provider)
       let version = await contract.versionRecipient()
       console.log(version)
 
       await send(async (signer) => {
+        console.log('my address: ', await signer.getAddress())
         contract = contract.connect(signer)
-        await contract.setVal(10)
+        await contract.setVal(Date.now())
         let val = await contract.getVal(await signer.getAddress())
         setVal(val.toString())
       })
-
     })()
-
   }, [])
 
   return <div>hello {val}</div>
