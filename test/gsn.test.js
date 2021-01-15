@@ -1,7 +1,6 @@
 // const { ethers, upgrades } = require("hardhat")
 const { expect } = require("chai")
 const { ethers } = require("ethers")
-const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
 const GsnTestEnvironment = new require('@opengsn/gsn/dist/GsnTestEnvironment').GsnTestEnvironment
 

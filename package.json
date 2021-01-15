@@ -6,13 +6,13 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write 'contracts/**/*.sol' && yarn run linter",
-    "compile": "hardhat compile & cp -rf artifacts client/artifacts",
+    "compile": "hardhat compile  && cp -R artifacts client/",
     "test:contracts": "hardhat test --network localhost",
     "linter": "eslint --fix ./",
     "deploy:rinkeby": "hardhat run ./scripts/deploy.js --network rinkeby",
-    "deploy:local": "hardhat run ./scripts/deploy.js --network localhost",
+    "deploy:local": "yarn compile && hardhat run ./scripts/deploy.js --network localhost",
     "clean": "hardhat clean",
-    "dev:net": "hardhat node",
+    "dev:net": "yarn build:client && hardhat node",
     "dev:gsn": "gsn start",
     "dev:app": "yarn --cwd client dev",
     "build:client": "yarn --cwd client build"
@@ -45,9 +45,5 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "dependencies": {
-    "@openzeppelin/test-helpers": "^0.5.10",
-    "jest": "^26.6.3"
   }
 }

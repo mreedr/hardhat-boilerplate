@@ -1,14 +1,35 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 const ethers = require('ethers')
+const { RelayProvider } = require('@opengsn/gsn')
+const Web3HttpProvider = require( 'web3-providers-http')
+
 const Web3ProviderCtx = createContext()
 
 export function Web3Provider({ children }) {
-  let provider = new ethers.providers.JsonRpcProvider(process.env.TEST_WS_CONNECTION)
-  // do I initialize all the contracts here? probably not since they will need to be fetched
-  // well... I guess I could build them into the project
-  // I don't think so
+  let provider = new ethers.providers.WebSocketProvider(process.env.NEXT_PUBLIC_TEST_WS_CONNECTION)
+
+  let send = async (fn) => {
+    let config = {
+        paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS,
+        loggerConfiguration: {
+            logLevel: 'error'
+        }
+    }
+    let gsnProvider = await RelayProvider.newProvider({
+      provider: new Web3HttpProvider(process.env.NEXT_PUBLIC_TEST_HTTP_CONNECTION),
+      config
+    }).init()
+
+    let from = gsnProvider.newAccount().address
+    // wrap gsnPrivder with ethersProvider to interact with our contracts
+    let ethersGSNProvider = new ethers.providers.Web3Provider(gsnProvider)
+    // pre wrap all accounts in ethersGSNProvider)
+    await fn(ethersGSNProvider.getSigner(from))
+    // TODO: remove the key somehow
+  }
+
   return (
-    <Web3ProviderCtx.Provider value={{ provider }}>
+    <Web3ProviderCtx.Provider value={{ provider, send }}>
       {children}
     </Web3ProviderCtx.Provider>
   )

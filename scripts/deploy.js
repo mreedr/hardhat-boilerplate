@@ -1,4 +1,5 @@
 const { ethers, upgrades } = require("hardhat")
+const fs = require('fs')
 
 async function main() {
   const [deployer] = await ethers.getSigners()
@@ -13,7 +14,12 @@ async function main() {
   const instance = await upgrades.deployProxy(MyContract, [process.env.TEST_FORWARDER_ADDR])
   await instance.deployed()
 
-  console.log("MyContract address:", instance.address)
+  // build these contract addresses into client/artifacts
+  // create josn file
+  // { "ContractName": "0x0000" }
+
+  fs.writeFileSync('./client/artifacts/addresses.json', `{ "MyContract": "${instance.address}" }`)
+  console.log("Contract address written to: ./client/artifacts/addresses.json")
 }
 
 // async function upgradeContract() {
