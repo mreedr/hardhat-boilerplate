@@ -6,13 +6,13 @@ export default function Claim({ address, abi }) {
   const { provider, send } = useProvider()
   const [ val, setVal ] = useState()
   let contract = new ethers.Contract(address, abi, provider)
+  console.log('render')
 
   useEffect(() => {
     contract.on('ValSet', async (addr, val) => {
       console.log('event happened', addr, val.toString())
       setVal(val.toString())
     })
-
     return () => contract.removeAllListeners()
   }, [])
 
