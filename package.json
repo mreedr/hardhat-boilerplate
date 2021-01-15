@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write 'contracts/**/*.sol' && yarn run linter",
-    "compile": "hardhat compile",
+    "compile": "hardhat compile & cp -rf artifacts client/artifacts",
     "test:contracts": "hardhat test --network localhost",
     "linter": "eslint --fix ./",
     "deploy:rinkeby": "hardhat run ./scripts/deploy.js --network rinkeby",

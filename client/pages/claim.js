@@ -3,7 +3,7 @@ import { useProvider } from '../contexts/Web3Provider'
 
 export default function Claim({ abis }) {
   const { provider } = useProvider()
-  return <div>hi {JSON.stringify(provider)}</div>
+  return <div>hi {JSON.stringify(provider)} {JSON.stringify(abis)}</div>
 }
 
 export async function getStaticProps(context) {
