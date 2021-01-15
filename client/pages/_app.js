@@ -1,12 +1,11 @@
 import '../styles/globals.css'
-import { AppWrapper } from '../context/AppContext'
+import { Contracts } from '../contexts/Web3Provider'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <AppWrapper>
+    <Contracts>
       <Component {...pageProps} />
-    </AppWrapper>
+    </Contracts>
   )
 }
-
 export default MyApp

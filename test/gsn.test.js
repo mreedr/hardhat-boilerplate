@@ -39,7 +39,6 @@ describe('GSN', function () {
 
         let afterBalance = await testInstance.getRelayHubDeposit()
         expect(afterBalance).to.be.below(paymasterRelayBalance)
-        console.log(paymasterRelayBalance.toString(), afterBalance.toString())
 
         let val = await contractInstance.connect(emptyAccount).getVal(await emptyAccount.getAddress())
         expect(val).to.equal(15)

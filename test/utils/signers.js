@@ -69,7 +69,6 @@ let gsnSigners
 let defaultSigners
 let pmAddress
 let semaphore = false
-// needs default paymaster unless said otherwise
 const getInstance = async (opt) => {
     // setup default options
     let { paymasterAddress, useGSN } = {
